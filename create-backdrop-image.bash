@@ -31,7 +31,6 @@ echo "BACKDROP_IMAGE=$BACKDROP_IMAGE"
 
 # If buildah already has an image called BACKDROP_IMAGE we inform the
 # user that they will have to remove it before trying again
-# TODO the command in the if outputs an error we want it silent
 if (buildah images "localhost/$BACKDROP_IMAGE" > /dev/null 2>&1)
 then
     echo "Error: an image called localhost/$BACKDROP_IMAGE already exists."
@@ -66,7 +65,7 @@ buildah copy "$BACKDROP_IMAGE" configure-backdrop.bash /usr/local/bin/configure-
 buildah copy "$BACKDROP_IMAGE" configure-backdrop.service /etc/systemd/system/configure-backdrop.service
 
 
-# Change files permissions TODO might want to upload a correct settings.php file to begin with
+# Change files permissions
 buildah run "$BACKDROP_IMAGE" -- chown apache:apache /var/www/html/files
 buildah run "$BACKDROP_IMAGE" -- chown apache:apache /var/www/html/settings.php
 buildah run "$BACKDROP_IMAGE" -- chmod a+x /usr/local/bin/configure-backdrop
