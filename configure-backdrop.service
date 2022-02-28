@@ -1,0 +1,10 @@
+[Unit]
+Description=Configure Backdrop
+Before=httpd.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/configure-backdrop
+
+[Install]
+WantedBy=multi-user.target
