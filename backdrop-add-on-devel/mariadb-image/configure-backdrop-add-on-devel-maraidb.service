@@ -1,0 +1,11 @@
+[Unit]
+Description=Configure MariaDB for Backdrop Add-On Development
+After=mariadb.service
+ConditionPathExists=!/var/lock/configure-backdrop-add-on-devel-maraidb.lock
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/configure-backdrop-add-on-devel-maraidb
+
+[Install]
+WantedBy=multi-user.target
