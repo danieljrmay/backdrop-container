@@ -78,7 +78,7 @@ fi
 # Database Charset
 # shellcheck disable=SC2016
 database_charset_php_code='$database_charset'
-database_charset_php_code+="'utf8mb4';"
+database_charset_php_code+=" = 'utf8mb4';"
 
 if (echo "$database_charset_php_code" >>/var/www/html/settings.php); then
 	systemd-cat \
