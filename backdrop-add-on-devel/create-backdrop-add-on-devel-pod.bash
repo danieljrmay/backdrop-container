@@ -92,3 +92,7 @@ podman run \
        --detach \
        localhost/$BACKDROP_IMAGE
 
+
+# Announce finish with instructions to complete backdrop installation
+# via browser
+echo 'Finished. Please continue the backdrop installation by visiting http://localhost:8080/core/install.php'

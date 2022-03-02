@@ -1,0 +1,11 @@
+[Unit]
+Description=Configure Backdrop for Backdrop Add-On Development
+Before=httpd.service
+ConditionPathExists=!/var/lock/configure-backdrop-add-on-devel-backdrop.lock
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/configure-backdrop
+
+[Install]
+WantedBy=multi-user.target
