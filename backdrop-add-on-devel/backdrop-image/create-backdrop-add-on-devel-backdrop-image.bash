@@ -62,18 +62,18 @@ buildah run "$image" -- dnf --assumeyes clean all
 # Copy the backdrop files
 buildah copy "$image" backdrop /var/www/html
 buildah copy "$image" backdrop-add-on-devel.conf /etc/httpd/conf.d/backdrop-add-on-devel.conf
-buildah copy "$image" onfigure-backdrop-add-on-devel-backdrop.bash /usr/local/bin/onfigure-backdrop-add-on-devel-backdrop
+buildah copy "$image" configure-backdrop-add-on-devel-backdrop.bash /usr/local/bin/configure-backdrop-add-on-devel-backdrop
 buildah copy "$image" configure-backdrop-add-on-devel-backdrop.service /etc/systemd/system/configure-backdrop-add-on-devel-backdrop.service
 
 # Change files permissions
 buildah run "$image" -- chown apache:apache /var/www/html/files
 buildah run "$image" -- chown apache:apache /var/www/html/settings.php
-buildah run "$image" -- chmod a+x /usr/local/bin/onfigure-backdrop-add-on-devel-backdrop
+buildah run "$image" -- chmod a+x /usr/local/bin/configure-backdrop-add-on-devel-backdrop
 
 # Enable the services we are going to want
 buildah run "$image" -- systemctl enable httpd.service
 buildah run "$image" -- systemctl enable php-fpm.service
-buildah run "$image" -- systemctl enable onfigure-backdrop-add-on-devel-backdrop.service
+buildah run "$image" -- systemctl enable configure-backdrop-add-on-devel-backdrop.service
 
 # Configure the environment variables
 buildah config --env BACKDROP_DATABASE_NAME="BACKDROP_DATABASE_NAME" "$image"
