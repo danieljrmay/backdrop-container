@@ -1,15 +1,26 @@
 # Backdrop Add-on Development MariaDB Image #
 
-## Todo ##
+This directory contains the files used to create the
+`backdrop-add-on-devel-mariadb-image`. This is an image based on the
+latst version of `fedora` with `mariadb-server` installed and an empty
+database created for `backdrop`.
 
-Add a section here explaining what the files in this directory are
-for.
+Here’s a little explaination about what each file is for:
+
+* `configure-backdrop-add-on-devel-mariadb.service` defines a
+  `systemd` service which executes the
+  `configure-backdrop-add-on-devel-mariadb.bash` script one-time
+  only.
+* `configure-backdrop-add-on-devel-mariadb.bash` is a script which
+  creates an empty database for `backdrop`.
+* `create-backdrop-add-on-devel-mariadb-image.bash` a script which
+  creates the image using various `buildah` commands.
 
 ## Create the image ##
 
 Create the MariaDB image with:
 
-```Shell
+```shell_session
 bash create-backdrop-add-on-devel-maraidb-image.bash 
 ```
 
@@ -17,14 +28,14 @@ bash create-backdrop-add-on-devel-maraidb-image.bash
 
 You can run and explore an instance of this image with:
 
-```Shell
+```shell_session
 podman run --detach --name my-mariadb localhost/backdrop-add-on-devel-maraidb
 podman exec --tty --interactive my-mariadb /bin/bash
 ```
 
 You can then check that mariadb is running:
 
-```Shell
+```shell_session
 [root@610df4c678e9 /]# systemctl status mariadb
 ● mariadb.service - MariaDB 10.5 database server
      Loaded: loaded (/usr/lib/systemd/system/mariadb.service; enabled; vendor preset: disabled)
@@ -57,7 +68,7 @@ Mar 02 13:10:34 610df4c678e9 systemd[1]: Started MariaDB 10.5 database server.
 You can check that our `configure-backdrop-add-on-devel-maraidb`
 systemd service has run by checking the logs with:
 
-```Shell
+```shell_session
 [root@610df4c678e9 /]# journalctl --unit configure-backdrop-add-on-devel-maraidb
 Mar 02 13:10:34 610df4c678e9 systemd[1]: Starting Configure MariaDB for Backdrop Add-On Development...
 Mar 02 13:10:34 610df4c678e9 systemd[1]: configure-backdrop-add-on-devel-maraidb.service: Deactivated successfully.
@@ -66,7 +77,7 @@ Mar 02 13:10:34 610df4c678e9 systemd[1]: Finished Configure MariaDB for Backdrop
 
 You can check that a database has been created for backdrop with:
 
-```Shell
+```shell_session
 [root@610df4c678e9 /]# mariadb -uroot
 Welcome to the MariaDB monitor.  Commands end with ; or \g.
 Your MariaDB connection id is 4
@@ -90,15 +101,11 @@ MariaDB [(none)]> SHOW DATABASES;
 MariaDB [(none)]> exit
 ```
 
-Exit the container with:
+Exit the container by entering `exit` at the command prompt so that
+you are back on the *container host* environment. You can then stop and
+remove your container with:
 
-```Shell
-[root@610df4c678e9 /]# exit 
-```
-
-You can then stop and remove your container with:
-
-```Shell
+```shell_session
 podman stop my-mariadb
 podman rm my-mariadb
 ```
