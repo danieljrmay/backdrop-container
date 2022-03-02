@@ -2,18 +2,19 @@
 
 This directory contains the files used to create the
 `backdrop-add-on-devel-backdrop-image`. This is an image based on the
-latst version of `fedora` with `httpd`, `php` and what should be the
+latst version of `fedora` with `httpd`, `php` and what *should be* the
 latest release of backdrop installed.
 
 Here’s a little explaination about what each file is for:
 
-* `backdrop-add-on-devel.conf` is the apache configuration file.
-* `configure-backdrop-add-on-devel-backdrop.bash` is a script which
-  configures the backdrop installation by modifying `settings.php`.
+* `backdrop-add-on-devel.conf` is the apache configuration file for
+  the image.
 * `configure-backdrop-add-on-devel-backdrop.service` defines a
   `systemd` service which executes the
   `configure-backdrop-add-on-devel-backdrop.bash` script one-time
   only.
+* `configure-backdrop-add-on-devel-backdrop.bash` is a script which
+  configures the backdrop installation by modifying `settings.php`.
 * `create-backdrop-add-on-devel-backdrop-image.bash` a script which
   creates the image using various `buildah` commands.
 
