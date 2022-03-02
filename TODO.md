@@ -1,9 +1,13 @@
 # backdrop-pod Todo List
 
-* [ ] Add 4byte character support.
-* [ ] Update `README.md` files.
+* [ ] Create `backdrop-add-on-devel/README.md` file.
+* [ ] Update `README.md` file.
 * [ ] Add cron support.
-* [ ] Create backdrop-add-on-devel: pod with stable release of
-      backdrop, mariadb, phpMyAdmin, etc.
-* [ ] Create backdrop-core-devel: pod with git pull of backdrop,
-      mariadb, phpMyAdmin, etc.
+* [ ] Add backdrop-minimal image and pod.
+* [ ] Illustrate [Add check for PHP zip extension to Status Report
+      #3978](https://github.com/backdrop/backdrop-issues/issues/3978
+      "Backdrop issue on GitHub.") with backdrop-minimal.
+* [ ] Add backdrop-basic image and pod.
+* [ ] Create `phpMyAdmin` image and add to backdrop-add-on-devel pod.
+* [ ] Add backdrop-core-devel image and pod.
+* [ ] Add backdrop-poduction image and pod.
