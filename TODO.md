@@ -1,7 +1,7 @@
 # backdrop-pod Todo List
 
-* [ ] Create `backdrop-add-on-devel/README.md` file.
 * [ ] Update `README.md` file.
+* [ ] Rework project directory sturcture to `/src/{image,pod,host}`.
 * [ ] Add cron support.
 * [ ] Add backdrop-minimal image and pod.
 * [ ] Illustrate [Add check for PHP zip extension to Status Report
