@@ -27,6 +27,8 @@ declare -r backdrop_image='localhost/backdrop-add-on-devel-backdrop'
 : "${BACKDROP_POD_PUBLISHED_PORT:=8080}"
 : "${MARIADB_CONTAINER:=backdrop-add-one-devel-mariadb}"
 : "${BACKDROP_CONTAINER:=backdrop-add-one-devel-backdrop}"
+: "${CUSTOM_MODULES_DIR:=$HOME/Projects/Backdrop/Modules}"
+: "${CUSTOM_THEMES_DIR:=$HOME/Projects/Backdrop/Themes}"
 
 # Errors
 declare -ir error_image_does_not_exist=1
@@ -69,11 +71,17 @@ podman run \
 	--detach \
 	$mariadb_image
 
+# Change SELinux
+chcon --type=container_file_t $CUSTOM_MODULES_DIR
+chcon --type=container_file_t $CUSTOM_THEMES_DIR
+
 # Create the backdrop container
 podman run \
 	--pod "$BACKDROP_POD" \
 	--name "$BACKDROP_CONTAINER" \
 	--secret source=backdrop-pod-secrets,type=mount,mode=400,target=configure-backdrop-add-on-devel-backdrop \
+	--volume $CUSTOM_MODULES_DIR:/var/www/html/modules/custom:ro,z \
+	--volume $CUSTOM_THEMES_DIR:/var/www/html/themes/custom:ro,z \
 	--detach \
 	$backdrop_image
 
