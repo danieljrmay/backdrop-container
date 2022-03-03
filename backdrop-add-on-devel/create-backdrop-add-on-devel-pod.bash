@@ -58,10 +58,14 @@ podman pod create \
 	--publish "${BACKDROP_POD_PUBLISHED_PORT}:80" \
 	--network bridge
 
+# Create the secrets which will be passed into the containers
+podman secret create backdrop-pod-secrets backdrop-add-on-devel-pod.secrets
+
 # Create the mariadb container
 podman run \
 	--pod "$BACKDROP_POD" \
 	--name "$MARIADB_CONTAINER" \
+	--secret source=backdrop-pod-secrets,type=mount,mode=400,target=configure-backdrop-add-on-devel-maraidb \
 	--detach \
 	$mariadb_image
 
@@ -69,6 +73,7 @@ podman run \
 podman run \
 	--pod "$BACKDROP_POD" \
 	--name "$BACKDROP_CONTAINER" \
+	--secret source=backdrop-pod-secrets,type=mount,mode=400,target=configure-backdrop-add-on-devel-backdrop \
 	--detach \
 	$backdrop_image
 

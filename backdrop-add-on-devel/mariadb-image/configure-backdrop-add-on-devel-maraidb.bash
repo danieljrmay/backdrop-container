@@ -13,31 +13,46 @@
 # https://github.com/danieljrmay/backdrop-pod
 
 declare -r identifier='configure-backdrop-add-on-devel-maraidb'
-declare -r lock_file_path='/var/lock/configure-backdrop-add-on-devel-maraidb.lock'
-
-: "${BACKDROP_DATABASE_NAME:=backdrop_database_name}"
-: "${BACKDROP_DATABASE_USER:=backdrop_database_user}"
-: "${BACKDROP_DATABASE_PASSWORD:=backdrop_database_password}"
+declare -r lock_path='/var/lock/configure-backdrop-add-on-devel-maraidb.lock'
+declare -r secrets_path='/run/secrets/configure-backdrop-add-on-devel-maraidb'
 
 systemd-cat --identifier=$identifier echo 'Starting script.'
 
-if [ -f "$lock_file_path" ]; then
+# Check that this script has not already run, by checking for a lock
+# file.
+if [ -f "$lock_path" ]; then
 	systemd-cat --identifier=$identifier --priority=warning \
-		echo "Lock file $lock_file_path already exists, exiting."
+		echo "Lock file $lock_path already exists, exiting."
 	exit 1
 else
 	(
-		touch $lock_file_path &&
+		touch $lock_path &&
 			systemd-cat \
 				--identifier=$identifier \
-				echo "Created $lock_file_path to prevent the re-running of this script."
+				echo "Created $lock_path to prevent the re-running of this script."
 	) || (
 		systemd-cat \
 			--identifier=$identifier \
 			--priority=error \
-			echo "Failed to create $lock_file_path so exiting." &&
+			echo "Failed to create $lock_path so exiting." &&
 			exit 2
 	)
+fi
+
+# Source the secrets file if it exists, if it doesn't then use some
+# defaults and report a warning.
+# shellcheck source=../backdrop-add-on-devel-pod.secrets
+if source $secrets_path; then
+	systemd-cat --identifier=$identifier \
+		echo "Successfully sourced $secrets_path secrets file."
+else
+	systemd-cat \
+		--identifier=$identifier \
+		--priority=warning \
+		echo "Failed to source secrets file $secrets_path so using default values."
+	BACKDROP_DATABASE_NAME=backdrop_database_name
+	BACKDROP_DATABASE_USER=backdrop_database_user
+	BACKDROP_DATABASE_PASSWORD=backdrop_database_password
 fi
 
 mysql --user=root <<EOF

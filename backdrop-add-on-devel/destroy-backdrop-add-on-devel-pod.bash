@@ -11,3 +11,4 @@
 
 podman pod stop $BACKDROP_POD
 podman pod rm $BACKDROP_POD
+podman secret rm backdrop-pod-secrets
