@@ -15,7 +15,7 @@ script_name=$(basename "${BASH_SOURCE[@]}")
 declare -r script_name
 
 # Environment variables and their default values.
-: "${BACKDROP_VERSION:=1.21.2}"
+: "${BACKDROP_VERSION:=1.21.3}"
 
 # Error codes
 declare -ir error_image_exists=1
