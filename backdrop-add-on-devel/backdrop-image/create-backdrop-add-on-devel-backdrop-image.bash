@@ -56,7 +56,7 @@ buildah from --name "$image" registry.fedoraproject.org/fedora:latest
 
 # Install RPMs and clean up
 buildah run "$image" -- dnf --assumeyes update
-buildah run "$image" -- dnf --assumeyes install php php-gd php-mysqlnd php-pecl-zip
+buildah run "$image" -- dnf --assumeyes install php php-gd php-mysqlnd php-pear-PHP-CodeSniffer php-pecl-zip
 buildah run "$image" -- dnf --assumeyes clean all
 
 # Copy the backdrop files
