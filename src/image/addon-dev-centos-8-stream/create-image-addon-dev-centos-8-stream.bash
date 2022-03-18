@@ -1,21 +1,22 @@
 #!/bin/bash
-# create-backdrop-add-on-devel-backdrop-image
+# create-image-addon-dev-centos-8-stream
 #
 # Author: Daniel J. R. May
 #
-# This script creates a container image of backdrop & httpd for use in
-# a "backdrop add-on development" pod.
+# This script creates a container image of backdrop, httpd, mariadb
+# and various php libraries on a CentOS8 base.
 #
 # For more information (or to report issues) go to
-# https://github.com/danieljrmay/backdrop-pod
+# https://github.com/danieljrmay/backdrop-container
 
 # Script constants
-declare -r image='backdrop-add-on-devel-backdrop'
+declare -r image='backdrop-addon-dev-centos-8-stream'
 script_name=$(basename "${BASH_SOURCE[@]}")
 declare -r script_name
 
 # Environment variables and their default values.
-: "${BACKDROP_VERSION:=1.21.3}"
+# TODO import from somewhere
+: "${BACKDROP_VERSION:=1.21.4}"
 
 # Error codes
 declare -ir error_image_exists=1
@@ -51,12 +52,23 @@ echo "Downloading and unzipping backdrop release version $BACKDROP_VERSION..."
 		exit $error_failed_to_get_backdrop_release
 )
 
+# Pull the latest version of CentOS8
+buildah pull quay.io/centos/centos:stream8
+
 # Create a new image based on the latest version of fedora
-buildah from --name "$image" registry.fedoraproject.org/fedora:latest
+buildah from --name "$image" quay.io/centos/centos:stream8
 
 # Install RPMs and clean up
 buildah run "$image" -- dnf --assumeyes update
-buildah run "$image" -- dnf --assumeyes install php php-gd php-mbstring php-mysqlnd php-pear-PHP-CodeSniffer php-pecl-zip php-xml
+buildah run "$image" -- dnf --assumeyes install \
+	mariadb-server \
+	php \
+	php-fpm \
+	php-gd \
+	php-mbstring \
+	php-mysqlnd \
+	php-pecl-zip \
+	php-xml
 buildah run "$image" -- dnf --assumeyes clean all
 
 # Copy the backdrop files
