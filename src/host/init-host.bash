@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 # configure-container-host.bash
 #
 # Author: Daniel J. R. May
