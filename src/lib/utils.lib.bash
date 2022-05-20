@@ -4,6 +4,19 @@
 # backdrop-container.bash script.
 #
 
+# Variables
+declare -r _version='0.0.1, 21 March 2022'
+
+_exec_environment=$(basename "$(pwd)")
+readonly _exec_environment
+
+# Exit codes
+declare -ir _exit_status_ok=0
+declare -ir _exit_status_utils_not_found=1
+declare -ir _exit_status_inaccessible_code=2
+declare -ir _exit_status_syntax_error=3
+declare -ir _exit_status_file_not_found=4
+
 # Font formating related variables for easy text decoration when
 # echoing output to the console.
 
@@ -124,4 +137,18 @@ function warn {
 
 function error {
 	echo -e "[${_font_bold}${_font_fg_red}ERROR${_font_reset}] $1" >&2
+}
+
+# Print version to user this can be called by all command scripts with
+# the [-V|--version] flag
+print_version() {
+	echo "backdrop-container version $_version"
+}
+
+list_image_recipes() {
+	for f in $1; do
+		if [[ $(basename "$f") =~ create-image-(.+)\.bash ]]; then
+			echo "${BASH_REMATCH[1]}"
+		fi
+	done
 }

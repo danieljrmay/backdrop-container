@@ -1,6 +1,7 @@
 # backdrop-pod Todo List
 
 * [ ] Update `README.md` file.
+* [ ] Rename `backdrop-container` to `containerctl`.
 * [ ] Rework project directory sturcture to `/src/{image,pod,host}`.
 * [ ] Add cron support.
 * [ ] Add backdrop-minimal image and pod.
